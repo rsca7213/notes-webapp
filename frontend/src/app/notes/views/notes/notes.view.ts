@@ -5,6 +5,7 @@ import { CreateNoteModalComponent } from '../../components/create-note-modal/cre
 import { UpdateNoteModalComponent } from '../../components/update-note-modal/update-note-modal.component'
 import { DeleteNoteModalComponent } from '../../components/delete-note-modal/delete-note-modal.component'
 import { lastValueFrom } from 'rxjs'
+import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component'
 
 @Component({
   selector: 'app-views-notes',
@@ -21,6 +22,7 @@ export class NotesView implements OnInit {
   @ViewChild(CreateNoteModalComponent) public createNoteModalComponent: CreateNoteModalComponent
   @ViewChild(UpdateNoteModalComponent) public updateNoteModalComponent: UpdateNoteModalComponent
   @ViewChild(DeleteNoteModalComponent) public deleteNoteModalComponent: DeleteNoteModalComponent
+  @ViewChild(ErrorModalComponent) public errorModalComponent: ErrorModalComponent
 
   public constructor(private readonly notesService: NotesService) {}
 
@@ -54,7 +56,7 @@ export class NotesView implements OnInit {
 
       return notes
     } catch {
-      // handle error TODO
+      this.errorModalComponent.openModal("Couldn't fetch notes, please try again.")
       return []
     }
   }
@@ -65,7 +67,7 @@ export class NotesView implements OnInit {
         this.notes = this.notes.filter(note => note.id !== noteId)
       },
       error: () => {
-        // handle error TODO
+        this.errorModalComponent.openModal("Couldn't delete note, please try again.")
       }
     })
   }
@@ -82,7 +84,7 @@ export class NotesView implements OnInit {
         }
       },
       error: () => {
-        // handle error TODO
+        this.errorModalComponent.openModal("Couldn't update note, please try again.")
       }
     })
   }
@@ -93,22 +95,23 @@ export class NotesView implements OnInit {
         this.notes = await this.getNotes()
       },
       error: () => {
-        // handle error TODO
+        this.errorModalComponent.openModal("Couldn't create note, please try again.")
       }
     })
   }
 
   public changeNoteArchiveStateById(noteId: number): void {
     this.notesService.changeNoteArchiveStateById(noteId).subscribe({
-      next: () => {
+      next: async () => {
         const note = this.notes.find(note => note.id === noteId)
 
         if (note) {
           note.archived = !note.archived
+          await this.updateFilters()
         }
       },
       error: () => {
-        // handle error TODO
+        this.errorModalComponent.openModal("Couldn't update note, please try again.")
       }
     })
   }
