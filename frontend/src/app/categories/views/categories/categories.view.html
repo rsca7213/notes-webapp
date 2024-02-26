@@ -1,6 +1,12 @@
-<app-components-categories-create-category-modal></app-components-categories-create-category-modal>
-<app-components-categories-update-category-modal></app-components-categories-update-category-modal>
-<app-components-categories-delete-category-modal></app-components-categories-delete-category-modal>
+<app-components-categories-create-category-modal
+  (categoryCreated)="createCategory($event)"
+></app-components-categories-create-category-modal>
+<app-components-categories-update-category-modal
+  (categoryUpdated)="updateCategory($event)"
+></app-components-categories-update-category-modal>
+<app-components-categories-delete-category-modal
+  (categoryDeleted)="deleteCategory($event)"
+></app-components-categories-delete-category-modal>
 <app-components-shared-error-modal></app-components-shared-error-modal>
 
 <div class="container">
