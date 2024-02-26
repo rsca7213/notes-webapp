@@ -75,6 +75,7 @@ export class NotesService {
     const note = this.getNoteById(id)
     if (note) {
       note.archived = !note.archived
+      note.updated_at = new Date()
     }
   }
 }
