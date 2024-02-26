@@ -6,6 +6,8 @@ import { UpdateNoteModalComponent } from '../../components/update-note-modal/upd
 import { DeleteNoteModalComponent } from '../../components/delete-note-modal/delete-note-modal.component'
 import { lastValueFrom } from 'rxjs'
 import { ErrorModalComponent } from '../../../shared/components/error-modal/error-modal.component'
+import { CategoriesService } from '../../../shared/services/categories.service'
+import { Category } from '../../../shared/models/category.model'
 
 @Component({
   selector: 'app-views-notes',
@@ -14,9 +16,11 @@ import { ErrorModalComponent } from '../../../shared/components/error-modal/erro
 })
 export class NotesView implements OnInit {
   public notes: Note[]
+  public categories: Category[] = []
 
   public filters = {
-    notes: 'Active' as 'All' | 'Active' | 'Archived'
+    notes: 'Active' as 'All' | 'Active' | 'Archived',
+    category: 'All' as 'All' | 'No category' | number
   }
 
   @ViewChild(CreateNoteModalComponent) public createNoteModalComponent: CreateNoteModalComponent
@@ -24,7 +28,10 @@ export class NotesView implements OnInit {
   @ViewChild(DeleteNoteModalComponent) public deleteNoteModalComponent: DeleteNoteModalComponent
   @ViewChild(ErrorModalComponent) public errorModalComponent: ErrorModalComponent
 
-  public constructor(private readonly notesService: NotesService) {}
+  public constructor(
+    private readonly notesService: NotesService,
+    private readonly categoriesService: CategoriesService
+  ) {}
 
   public openCreateNoteModal(): void {
     this.createNoteModalComponent.openModal()
@@ -81,6 +88,7 @@ export class NotesView implements OnInit {
           note.title = data.title
           note.content = data.content
           note.updated_at = new Date()
+          note.categories = data.categories
         }
       },
       error: () => {
@@ -116,11 +124,36 @@ export class NotesView implements OnInit {
     })
   }
 
+  public async getCategories(): Promise<void> {
+    this.categoriesService.getCategories().subscribe({
+      next: categories => {
+        this.categories = categories
+      },
+      error: () => {
+        this.errorModalComponent.openModal("Couldn't fetch categories, please try again.")
+      }
+    })
+  }
+
   public async updateFilters(): Promise<void> {
     this.notes = await this.getNotes()
+
+    switch (this.filters.category) {
+      case 'All':
+        break
+      case 'No category':
+        this.notes = this.notes.filter(note => note.categories.length === 0)
+        break
+      default:
+        this.notes = this.notes.filter(note =>
+          note.categories.some(category => category.id === Number(this.filters.category))
+        )
+        break
+    }
   }
 
   public async ngOnInit(): Promise<void> {
     this.notes = await this.getNotes()
+    this.getCategories()
   }
 }

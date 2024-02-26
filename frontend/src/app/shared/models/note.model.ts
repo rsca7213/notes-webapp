@@ -1,3 +1,5 @@
+import { Category } from './category.model'
+
 export interface Note {
   id: number
   title: string
@@ -5,4 +7,5 @@ export interface Note {
   created_at: Date
   updated_at: Date
   archived: boolean
+  categories: Category[]
 }

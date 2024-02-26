@@ -30,11 +30,17 @@ export class NotesService {
   }
 
   public createNote(note: Note): Observable<void> {
-    return this.httpClient.post<void>('http://localhost:3000/api/notes', note)
+    return this.httpClient.post<void>('http://localhost:3000/api/notes', {
+      ...note,
+      categories: note.categories.map(category => category.id)
+    })
   }
 
   public updateNote(data: Note): Observable<void> {
-    return this.httpClient.put<void>(`http://localhost:3000/api/notes/${data.id}`, data)
+    return this.httpClient.put<void>(`http://localhost:3000/api/notes/${data.id}`, {
+      ...data,
+      categories: data.categories.map(category => category.id)
+    })
   }
 
   public deleteNoteById(id: number): Observable<void> {

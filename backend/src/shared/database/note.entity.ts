@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Note } from '../models/note.model'
+import { CategoryEntity } from './category.entity'
 
 @Entity()
 export class NoteEntity implements Note {
@@ -20,4 +21,8 @@ export class NoteEntity implements Note {
 
   @Column()
   archived: boolean
+
+  @ManyToMany(() => CategoryEntity)
+  @JoinTable()
+  categories: CategoryEntity[]
 }

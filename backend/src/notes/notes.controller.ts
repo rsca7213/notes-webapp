@@ -1,10 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { NotesService } from './notes.service'
 import { CreateNoteDto, UpdateNoteDto } from 'src/shared/dto/notes.dto'
+import { CategoriesService } from 'src/categories/categories.service'
+import { Category } from 'src/shared/models/category.model'
 
 @Controller('api/notes')
 export class NotesController {
-  public constructor(private readonly notesService: NotesService) {}
+  public constructor(
+    private readonly notesService: NotesService,
+    private readonly categoriesService: CategoriesService
+  ) {}
 
   @Get()
   public getNotes(@Query('archived') archived: string) {
@@ -22,19 +27,34 @@ export class NotesController {
   }
 
   @Post()
-  public createNote(@Body() note: CreateNoteDto) {
+  public async createNote(@Body() note: CreateNoteDto) {
+    const categories: Category[] = []
+
+    for (const categoryId of note.categories) {
+      const category = await this.categoriesService.getCategoryById(categoryId)
+      categories.push(category)
+    }
+
     this.notesService.createNote({
       id: 0,
       created_at: new Date(),
       updated_at: new Date(),
       title: note.title,
       content: note.content,
-      archived: false
+      archived: false,
+      categories
     })
   }
 
   @Put(':id')
-  public updateNoteById(@Param('id') id: number, @Body() note: UpdateNoteDto) {
+  public async updateNoteById(@Param('id') id: number, @Body() note: UpdateNoteDto) {
+    const categories: Category[] = []
+
+    for (const categoryId of note.categories) {
+      const category = await this.categoriesService.getCategoryById(categoryId)
+      categories.push(category)
+    }
+
     id = Number(id)
     this.notesService.updateNoteById(id, {
       id,
@@ -42,7 +62,8 @@ export class NotesController {
       content: note.content,
       created_at: new Date(),
       updated_at: new Date(),
-      archived: false
+      archived: false,
+      categories
     })
   }
 

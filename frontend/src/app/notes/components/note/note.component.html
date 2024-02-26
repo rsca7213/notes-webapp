@@ -20,6 +20,12 @@
           </p>
         </div>
       </div>
+      <p>
+        <span class="iconify" data-icon="mdi-tag"> </span>
+        @for (category of note.categories; track category.id) {
+        <span class="badge text-bg-info mx-1"> {{ category.name }} </span>
+        } @empty { <span class="text-muted"> No category </span> }
+      </p>
       <button class="btn btn-sm btn-info" (click)="changeNoteArchiveState()">
         <span class="iconify" data-icon="mdi-archive-arrow-up"> </span>
         @if (note.archived) { Unarchive } @else { Archive }

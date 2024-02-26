@@ -1,5 +1,11 @@
-<app-components-notes-create-note-modal (noteCreated)="createNote($event)"></app-components-notes-create-note-modal>
-<app-components-notes-update-note-modal (noteUpdated)="updateNote($event)"></app-components-notes-update-note-modal>
+<app-components-notes-create-note-modal
+  (noteCreated)="createNote($event)"
+  [categories]="categories"
+></app-components-notes-create-note-modal>
+<app-components-notes-update-note-modal
+  [categories]="categories"
+  (noteUpdated)="updateNote($event)"
+></app-components-notes-update-note-modal>
 <app-components-notes-delete-note-modal (noteDeleted)="deleteNoteById($event)">
 </app-components-notes-delete-note-modal>
 
@@ -16,7 +22,6 @@
       <div class="d-flex align-items-center">
         <label for="notes">
           <span class="iconify" data-icon="mdi-filter"> </span>
-          Filter By
         </label>
         <select
           name="notes"
@@ -28,6 +33,22 @@
           <option value="All">All</option>
           <option value="Active">Active</option>
           <option value="Archived">Archived</option>
+        </select>
+        <label for="categories" class="ms-2">
+          <span class="iconify" data-icon="mdi-tag"> </span>
+        </label>
+        <select
+          name="categories"
+          id="categories"
+          [(ngModel)]="filters.category"
+          class="form-control ms-2"
+          (change)="updateFilters()"
+        >
+          <option value="All">All</option>
+          <option value="No category">No category</option>
+          @for (category of categories; track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
+          }
         </select>
       </div>
       <button class="btn btn-primary" (click)="openCreateNoteModal()">

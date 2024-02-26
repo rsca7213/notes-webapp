@@ -12,15 +12,15 @@ export class NotesService {
   ) {}
 
   public async getActiveNotes(): Promise<Note[]> {
-    return this.noteRepository.findBy({ archived: false })
+    return this.noteRepository.find({ where: { archived: false }, relations: ['categories'] })
   }
 
   public async getArchivedNotes(): Promise<Note[]> {
-    return this.noteRepository.findBy({ archived: true })
+    return this.noteRepository.find({ where: { archived: true }, relations: ['categories'] })
   }
 
   public async getNoteById(id: number): Promise<Note> {
-    return this.noteRepository.findOneBy({ id })
+    return this.noteRepository.findOne({ where: { id }, relations: ['categories'] })
   }
 
   public async createNote(note: Note): Promise<void> {
@@ -29,19 +29,22 @@ export class NotesService {
       updated_at: new Date(),
       title: note.title,
       content: note.content,
-      archived: false
+      archived: false,
+      categories: note.categories
     })
   }
 
   public async updateNoteById(id: number, data: Note): Promise<void> {
-    await this.noteRepository.update(
-      { id },
-      {
-        title: data.title,
-        content: data.content,
-        updated_at: new Date()
-      }
-    )
+    const note = await this.noteRepository.findOne({ where: { id }, relations: ['categories'] })
+
+    if (note) {
+      note.title = data.title
+      note.content = data.content
+      note.updated_at = new Date()
+      note.categories = data.categories
+
+      await this.noteRepository.save(note)
+    }
   }
 
   public async deleteNoteById(id: number): Promise<void> {

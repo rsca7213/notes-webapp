@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { Note } from '../../../shared/models/note.model'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { Category } from '../../../shared/models/category.model'
 
 @Component({
   selector: 'app-components-notes-update-note-modal',
@@ -14,11 +15,15 @@ export class UpdateNoteModalComponent {
 
   public note: Note
 
+  @Input() public categories: Category[] = []
+  public selectedCategories: Category[] = []
+
   @Output() public noteUpdated: EventEmitter<Note> = new EventEmitter<Note>()
 
   public form = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    content: new FormControl('', [Validators.required])
+    content: new FormControl('', [Validators.required]),
+    category: new FormControl<number>(0)
   })
 
   public formErrors = {
@@ -31,6 +36,7 @@ export class UpdateNoteModalComponent {
   public closeModal(): void {
     this.modal.close()
     this.form.reset()
+    this.selectedCategories = []
   }
 
   public validateForm(): boolean {
@@ -54,7 +60,8 @@ export class UpdateNoteModalComponent {
       content: this.form.get('content')?.value ?? '',
       created_at: this.note.created_at,
       updated_at: this.note.updated_at,
-      archived: this.note.archived
+      archived: this.note.archived,
+      categories: this.selectedCategories
     }
 
     this.noteUpdated.emit(note)
@@ -62,11 +69,29 @@ export class UpdateNoteModalComponent {
     this.closeModal()
   }
 
+  public selectCategory(): void {
+    const index = this.selectedCategories.findIndex(c => c.id === this.form.get('category')?.value)
+
+    if (index !== -1) {
+      return
+    } else {
+      const category = this.categories.find(c => c.id === this.form.get('category')?.value)
+      if (category) this.selectedCategories.push(category)
+    }
+  }
+
+  public removeCategory(id: number): void {
+    this.selectedCategories = this.selectedCategories.filter(c => c.id !== id)
+  }
+
   public openModal(note: Note): void {
     this.note = note
 
     this.form.get('title')?.setValue(note.title)
     this.form.get('content')?.setValue(note.content)
+    this.form.get('category')?.setValue(this.categories[0]?.id || 0)
+
+    this.selectedCategories = note.categories
 
     this.modal = this.modalService.open(this.modalRef, {
       centered: true

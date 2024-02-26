@@ -23,6 +23,39 @@
         </div>
       </div>
       <div class="mb-3">
+        <label for="categories" class="form-label">
+          <span class="iconify" data-icon="mdi-tag"> </span>
+          Categories @for (cat of selectedCategories; track cat.id) {
+          <span class="badge text-bg-info badge-tag mx-1" (click)="removeCategory(cat.id)">
+            {{ cat.name }}
+            <span class="iconify" data-icon="mdi-close"> </span>
+          </span>
+          }
+        </label>
+        <div class="input-group">
+          <select
+            class="form-control"
+            id="categories"
+            name="category"
+            formControlName="category"
+            [disabled]="!categories.length"
+          >
+            @for (category of categories; track category.id) {
+            <option [ngValue]="category.id">
+              {{ category.name }}
+            </option>
+            } @empty {
+            <option value="0">No categories found</option>
+            }
+          </select>
+          <div class="input-group-text">
+            <button class="btn btn-sm btn-secondary" (click)="selectCategory()">
+              <span class="iconify" data-icon="mdi-plus"> </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
         <label for="content" class="form-label">
           <span class="iconify" data-icon="mdi-text-box"> </span>
           Content
