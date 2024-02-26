@@ -11,6 +11,7 @@ export class NoteComponent {
 
   @Output() public noteDeleteRequested: EventEmitter<Note> = new EventEmitter<Note>()
   @Output() public noteUpdateRequested: EventEmitter<Note> = new EventEmitter<Note>()
+  @Output() public noteArchiveStateChangeRequested: EventEmitter<number> = new EventEmitter<number>()
 
   public deleteNote(): void {
     this.noteDeleteRequested.emit(this.note)
@@ -18,5 +19,9 @@ export class NoteComponent {
 
   public updateNote(): void {
     this.noteUpdateRequested.emit(this.note)
+  }
+
+  public changeNoteArchiveState(): void {
+    this.noteArchiveStateChangeRequested.emit(this.note.id)
   }
 }

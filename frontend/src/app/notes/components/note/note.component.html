@@ -9,6 +9,8 @@
       Created {{ note.created_at | date : 'dd/MM/YYYY' }}
       <span class="iconify ms-2" data-icon="mdi-calendar-edit"> </span>
       Updated {{ note.updated_at | date : 'dd/MM/YYYY' }}
+      <span class="iconify ms-2" data-icon="mdi-archive"> </span>
+      {{ note.archived ? 'Archived' : 'Active' }}
     </div>
     <div class="card-text mt-2">
       <div class="card shadow-sm mb-3">
@@ -18,12 +20,9 @@
           </p>
         </div>
       </div>
-      <button class="btn btn-sm btn-info">
-        @if (note.archived) {
+      <button class="btn btn-sm btn-info" (click)="changeNoteArchiveState()">
         <span class="iconify" data-icon="mdi-archive-arrow-up"> </span>
-        Unarchive } @else {
-        <span class="iconify" data-icon="mdi-archive"> </span>
-        Archive }
+        @if (note.archived) { Unarchive } @else { Archive }
       </button>
       <button class="btn ms-1 btn-sm btn-warning" (click)="updateNote()">
         <span class="iconify" data-icon="mdi-pencil"> </span>

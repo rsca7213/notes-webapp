@@ -35,8 +35,12 @@ export class NotesService {
 
   public constructor() {}
 
-  public getNotes(): Note[] {
-    return this.notes
+  public getActiveNotes(): Note[] {
+    return this.notes.filter(note => !note.archived)
+  }
+
+  public getArchivedNotes(): Note[] {
+    return this.notes.filter(note => note.archived)
   }
 
   public getNoteById(id: number): Note | undefined {
@@ -65,5 +69,12 @@ export class NotesService {
 
   public deleteNoteById(id: number): void {
     this.notes = this.notes.filter(note => note.id !== id)
+  }
+
+  public changeNoteArchiveStateById(id: number): void {
+    const note = this.getNoteById(id)
+    if (note) {
+      note.archived = !note.archived
+    }
   }
 }

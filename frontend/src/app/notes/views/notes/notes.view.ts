@@ -13,6 +13,10 @@ import { DeleteNoteModalComponent } from '../../components/delete-note-modal/del
 export class NotesView implements OnInit {
   public notes: Note[]
 
+  public filters = {
+    notes: 'Active' as 'All' | 'Active' | 'Archived'
+  }
+
   @ViewChild(CreateNoteModalComponent) public createNoteModalComponent: CreateNoteModalComponent
   @ViewChild(UpdateNoteModalComponent) public updateNoteModalComponent: UpdateNoteModalComponent
   @ViewChild(DeleteNoteModalComponent) public deleteNoteModalComponent: DeleteNoteModalComponent
@@ -32,7 +36,15 @@ export class NotesView implements OnInit {
   }
 
   public getNotes(): Note[] {
-    return this.notesService.getNotes()
+    let notes: Note[] = []
+    notes = notes.concat(
+      this.filters.notes === 'Active' || this.filters.notes === 'All' ? this.notesService.getActiveNotes() : []
+    )
+    notes = notes.concat(
+      this.filters.notes === 'Archived' || this.filters.notes === 'All' ? this.notesService.getArchivedNotes() : []
+    )
+
+    return notes
   }
 
   public deleteNoteById(noteId: number): void {
@@ -46,6 +58,15 @@ export class NotesView implements OnInit {
 
   public createNote(note: Note): void {
     this.notesService.createNote(note)
+  }
+
+  public changeNoteArchiveStateById(noteId: number): void {
+    this.notesService.changeNoteArchiveStateById(noteId)
+    this.notes = this.getNotes()
+  }
+
+  public updateFilters(): void {
+    this.notes = this.getNotes()
   }
 
   public ngOnInit(): void {
