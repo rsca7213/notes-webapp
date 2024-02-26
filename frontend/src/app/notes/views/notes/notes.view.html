@@ -1,5 +1,7 @@
 <app-components-notes-create-note-modal (noteCreated)="createNote($event)"></app-components-notes-create-note-modal>
 <app-components-notes-update-note-modal (noteUpdated)="updateNote($event)"></app-components-notes-update-note-modal>
+<app-components-notes-delete-note-modal (noteDeleted)="deleteNoteById($event)">
+</app-components-notes-delete-note-modal>
 
 <div class="container">
   <div class="row my-3">
@@ -18,10 +20,17 @@
     <div class="col-12 col-lg-6 py-2">
       <app-components-notes-note
         [note]="note"
-        (noteDeleteRequested)="null"
+        (noteDeleteRequested)="openDeleteNoteModal($event)"
         (noteUpdateRequested)="openUpdateNoteModal($event)"
       ></app-components-notes-note>
     </div>
-    } @empty { No notes have been created yet. }
+    } @empty {
+    <div class="col-12 mt-3 py-2 alert alert-warning">
+      <p class="text-center h3">
+        <span class="iconify" data-icon="mdi-note-off"> </span>
+        No noted have been created yet.
+      </p>
+    </div>
+    }
   </div>
 </div>

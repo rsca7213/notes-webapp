@@ -1,0 +1,19 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <span class="iconify me-2" data-icon="mdi-plus-circle"> </span>
+    Delete Note
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete the note titled {{ note.title }}?</p>
+  </div>
+  <div class="modal-footer text-end">
+    <button class="btn btn-secondary" (click)="closeModal()">
+      <span class="iconify" data-icon="mdi-close"> </span>
+      Cancel
+    </button>
+    <button class="btn btn-success" (click)="deleteNote()">
+      <span class="iconify" data-icon="mdi-check"> </span>
+      Confirm
+    </button>
+  </div>
+</ng-template>

@@ -9,11 +9,11 @@ import { Note } from '../../../shared/models/note.model'
 export class NoteComponent {
   @Input() public note: Note
 
-  @Output() public noteDeleteRequested: EventEmitter<number> = new EventEmitter<number>()
+  @Output() public noteDeleteRequested: EventEmitter<Note> = new EventEmitter<Note>()
   @Output() public noteUpdateRequested: EventEmitter<Note> = new EventEmitter<Note>()
 
   public deleteNote(): void {
-    this.noteDeleteRequested.emit(this.note.id)
+    this.noteDeleteRequested.emit(this.note)
   }
 
   public updateNote(): void {

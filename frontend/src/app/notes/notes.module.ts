@@ -5,10 +5,11 @@ import { NoteComponent } from './components/note/note.component'
 import { CreateNoteModalComponent } from './components/create-note-modal/create-note-modal.component'
 import { CommonModule } from '@angular/common'
 import { ReactiveFormsModule } from '@angular/forms';
-import { UpdateNoteModalComponent } from './components/update-note-modal/update-note-modal.component'
+import { UpdateNoteModalComponent } from './components/update-note-modal/update-note-modal.component';
+import { DeleteNoteModalComponent } from './components/delete-note-modal/delete-note-modal.component'
 
 @NgModule({
-  declarations: [NotesView, NoteComponent, CreateNoteModalComponent, UpdateNoteModalComponent],
+  declarations: [NotesView, NoteComponent, CreateNoteModalComponent, UpdateNoteModalComponent, DeleteNoteModalComponent],
   imports: [NotesRoutingModule, CommonModule, ReactiveFormsModule]
 })
 export class NotesModule {}

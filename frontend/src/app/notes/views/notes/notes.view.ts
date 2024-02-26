@@ -3,6 +3,7 @@ import { NotesService } from '../../../shared/services/notes.service'
 import { Note } from '../../../shared/models/note.model'
 import { CreateNoteModalComponent } from '../../components/create-note-modal/create-note-modal.component'
 import { UpdateNoteModalComponent } from '../../components/update-note-modal/update-note-modal.component'
+import { DeleteNoteModalComponent } from '../../components/delete-note-modal/delete-note-modal.component'
 
 @Component({
   selector: 'app-views-notes',
@@ -14,6 +15,7 @@ export class NotesView implements OnInit {
 
   @ViewChild(CreateNoteModalComponent) public createNoteModalComponent: CreateNoteModalComponent
   @ViewChild(UpdateNoteModalComponent) public updateNoteModalComponent: UpdateNoteModalComponent
+  @ViewChild(DeleteNoteModalComponent) public deleteNoteModalComponent: DeleteNoteModalComponent
 
   public constructor(private readonly notesService: NotesService) {}
 
@@ -25,12 +27,17 @@ export class NotesView implements OnInit {
     this.updateNoteModalComponent.openModal(note)
   }
 
+  public openDeleteNoteModal(note: Note): void {
+    this.deleteNoteModalComponent.openModal(note)
+  }
+
   public getNotes(): Note[] {
     return this.notesService.getNotes()
   }
 
   public deleteNoteById(noteId: number): void {
     this.notesService.deleteNoteById(noteId)
+    this.notes = this.getNotes()
   }
 
   public updateNote(note: Note): void {
