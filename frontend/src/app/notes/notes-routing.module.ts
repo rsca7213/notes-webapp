@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { NotesView } from './views/notes/notes.view'
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./notes/notes.module').then(m => m.NotesModule)
+    component: NotesView
   }
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class NotesRoutingModule {}

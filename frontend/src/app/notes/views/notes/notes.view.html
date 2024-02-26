@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row my-3">
+    <div class="col">
+      <h4>My Notes</h4>
+    </div>
+    <div class="col text-end">
+      <a class="btn btn-primary">
+        <span class="iconify" data-icon="mdi-sticker-plus"> </span>
+        Create Note
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    @for (note of notes; track note.id) {
+    <div class="col-12 col-lg-6 py-2">
+      <app-components-notes-note [note]="note"></app-components-notes-note>
+    </div>
+    } @empty { No notes have been created yet. }
+  </div>
+</div>

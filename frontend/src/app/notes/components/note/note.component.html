@@ -1,0 +1,38 @@
+<div class="card shadow">
+  <div class="card-body">
+    <div class="card-title">
+      <span class="iconify" data-icon="mdi-sticker"> </span>
+      {{ note.title }}
+    </div>
+    <div class="card-subtitle text-muted">
+      <span class="iconify" data-icon="mdi-calendar-plus"> </span>
+      Created {{ note.created_at | date : 'dd/MM/YYYY' }}
+      <span class="iconify ms-2" data-icon="mdi-calendar-edit"> </span>
+      Updated {{ note.updated_at | date : 'dd/MM/YYYY' }}
+    </div>
+    <div class="card-text mt-2">
+      <div class="card shadow-sm mb-3">
+        <div class="card-text p-2">
+          <p class="note-content">
+            {{ note.content }}
+          </p>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-info">
+        @if (note.archived) {
+        <span class="iconify" data-icon="mdi-archive-arrow-up"> </span>
+        Unarchive } @else {
+        <span class="iconify" data-icon="mdi-archive"> </span>
+        Archive }
+      </button>
+      <button class="btn ms-1 btn-sm btn-warning">
+        <span class="iconify" data-icon="mdi-pencil"> </span>
+        Edit
+      </button>
+      <button class="btn ms-1 btn-sm btn-danger">
+        <span class="iconify" data-icon="mdi-trash"> </span>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
