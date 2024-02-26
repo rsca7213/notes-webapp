@@ -7,10 +7,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { SharedModule } from './shared/shared.module'
 import { CommonModule } from '@angular/common'
 import { ReactiveFormsModule } from '@angular/forms'
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, SharedModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    SharedModule,
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

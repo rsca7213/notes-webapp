@@ -1,81 +1,47 @@
 import { Injectable } from '@angular/core'
 import { Note } from '../models/note.model'
+import { HttpClient, HttpParams } from '@angular/common/http'
+import { Observable } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
-  private notes: Note[] = [
-    {
-      id: 1,
-      title: 'Shopping list',
-      content: 'Milk, eggs, bread, beer',
-      created_at: new Date(),
-      updated_at: new Date(),
-      archived: false
-    },
-    {
-      id: 2,
-      title: 'Workout plan',
-      content: 'Run 5k, 20 pushups, 20 squats, 20 situps',
-      created_at: new Date(),
-      updated_at: new Date(),
-      archived: false
-    },
-    {
-      id: 3,
-      title: 'Movies to watch',
-      content:
-        "The Godfather, The Shawshank Redemption, Pulp Fiction, The Dark Knight, Schindler's List, The Lord of the Rings: The Return of the King",
-      created_at: new Date(),
-      updated_at: new Date(),
-      archived: false
-    }
-  ]
+  public constructor(private readonly httpClient: HttpClient) {}
 
-  public constructor() {}
+  public getActiveNotes(): Observable<Note[]> {
+    let params = new HttpParams()
 
-  public getActiveNotes(): Note[] {
-    return this.notes.filter(note => !note.archived)
+    params = params.append('archived', 'false')
+
+    return this.httpClient.get<Note[]>('http://localhost:3000/api/notes', { params })
   }
 
-  public getArchivedNotes(): Note[] {
-    return this.notes.filter(note => note.archived)
+  public getArchivedNotes(): Observable<Note[]> {
+    let params = new HttpParams()
+
+    params = params.append('archived', 'true')
+
+    return this.httpClient.get<Note[]>('http://localhost:3000/api/notes', { params })
   }
 
-  public getNoteById(id: number): Note | undefined {
-    return this.notes.find(note => note.id === id)
+  public getNoteById(id: number): Observable<Note> {
+    return this.httpClient.get<Note>(`http://localhost:3000/api/notes/${id}`)
   }
 
-  public createNote(note: Note): void {
-    const maxId = Math.max(...this.notes.map(note => note.id))
-
-    note.id = maxId + 1
-    note.created_at = new Date()
-    note.updated_at = new Date()
-    note.archived = false
-
-    this.notes.push(note)
+  public createNote(note: Note): Observable<void> {
+    return this.httpClient.post<void>('http://localhost:3000/api/notes', note)
   }
 
-  public updateNote(data: Note): void {
-    const note = this.getNoteById(data.id)
-    if (note) {
-      note.title = data.title
-      note.content = data.content
-      note.updated_at = new Date()
-    }
+  public updateNote(data: Note): Observable<void> {
+    return this.httpClient.put<void>(`http://localhost:3000/api/notes/${data.id}`, data)
   }
 
-  public deleteNoteById(id: number): void {
-    this.notes = this.notes.filter(note => note.id !== id)
+  public deleteNoteById(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`http://localhost:3000/api/notes/${id}`)
   }
 
-  public changeNoteArchiveStateById(id: number): void {
-    const note = this.getNoteById(id)
-    if (note) {
-      note.archived = !note.archived
-      note.updated_at = new Date()
-    }
+  public changeNoteArchiveStateById(id: number): Observable<void> {
+    return this.httpClient.put<void>(`http://localhost:3000/api/notes/${id}/archive`, {})
   }
 }
