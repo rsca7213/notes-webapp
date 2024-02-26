@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { NotesService } from '../../../shared/services/notes.service'
 import { Note } from '../../../shared/models/note.model'
+import { CreateNoteModalComponent } from '../../components/create-note-modal/create-note-modal.component'
 
 @Component({
   selector: 'app-views-notes',
@@ -10,7 +11,13 @@ import { Note } from '../../../shared/models/note.model'
 export class NotesView implements OnInit {
   public notes: Note[]
 
+  @ViewChild(CreateNoteModalComponent) public createNoteModalComponent: CreateNoteModalComponent
+
   public constructor(private readonly notesService: NotesService) {}
+
+  public openCreateNoteModal(): void {
+    this.createNoteModalComponent.openModal()
+  }
 
   public getNotes(): Note[] {
     return this.notesService.getNotes()

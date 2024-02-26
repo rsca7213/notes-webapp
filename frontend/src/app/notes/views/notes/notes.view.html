@@ -1,13 +1,15 @@
+<app-components-notes-create-note-modal (noteCreated)="createNote($event)"></app-components-notes-create-note-modal>
+
 <div class="container">
   <div class="row my-3">
     <div class="col">
       <h4>My Notes</h4>
     </div>
     <div class="col text-end">
-      <a class="btn btn-primary">
-        <span class="iconify" data-icon="mdi-sticker-plus"> </span>
+      <button class="btn btn-primary" (click)="openCreateNoteModal()">
+        <span class="iconify" data-icon="mdi-plus-circle"> </span>
         Create Note
-      </a>
+      </button>
     </div>
   </div>
   <div class="row">

@@ -44,6 +44,13 @@ export class NotesService {
   }
 
   public createNote(note: Note): void {
+    const maxId = Math.max(...this.notes.map(note => note.id))
+
+    note.id = maxId + 1
+    note.created_at = new Date()
+    note.updated_at = new Date()
+    note.archived = false
+
     this.notes.push(note)
   }
 
