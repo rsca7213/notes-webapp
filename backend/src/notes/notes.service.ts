@@ -1,54 +1,59 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { NoteEntity } from 'src/shared/database/note.entity'
 import { Note } from 'src/shared/models/note.model'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class NotesService {
-  private notes: Note[] = []
+  public constructor(
+    @InjectRepository(NoteEntity)
+    private readonly noteRepository: Repository<NoteEntity>
+  ) {}
 
-  public getActiveNotes(): Note[] {
-    return this.notes.filter(note => !note.archived)
+  public async getActiveNotes(): Promise<Note[]> {
+    return this.noteRepository.findBy({ archived: false })
   }
 
-  public getArchivedNotes(): Note[] {
-    return this.notes.filter(note => note.archived)
+  public async getArchivedNotes(): Promise<Note[]> {
+    return this.noteRepository.findBy({ archived: true })
   }
 
-  public getNoteById(id: number): Note | undefined {
-    return this.notes.find(note => note.id === id)
+  public async getNoteById(id: number): Promise<Note> {
+    return this.noteRepository.findOneBy({ id })
   }
 
-  public createNote(note: Note): void {
-    const maxId = Math.max(...[...this.notes.map(note => note.id), 0])
-
-    this.notes.push({
-      id: maxId + 1,
-      title: note.title,
-      content: note.content,
+  public async createNote(note: Note): Promise<void> {
+    await this.noteRepository.save({
       created_at: new Date(),
       updated_at: new Date(),
+      title: note.title,
+      content: note.content,
       archived: false
     })
   }
 
-  public updateNoteById(id: number, data: Note): void {
-    const note = this.notes.find(note => note.id === id)
-
-    if (note) {
-      note.title = data.title
-      note.content = data.content
-      note.updated_at = new Date()
-    }
+  public async updateNoteById(id: number, data: Note): Promise<void> {
+    await this.noteRepository.update(
+      { id },
+      {
+        title: data.title,
+        content: data.content,
+        updated_at: new Date()
+      }
+    )
   }
 
-  public deleteNoteById(id: number): void {
-    this.notes = this.notes.filter(note => note.id !== id)
+  public async deleteNoteById(id: number): Promise<void> {
+    await this.noteRepository.delete({ id })
   }
 
-  public changeNoteArchiveStateById(id: number): void {
-    const note = this.notes.find(note => note.id === id)
+  public async changeNoteArchiveStateById(id: number): Promise<void> {
+    const note = await this.noteRepository.findOneBy({ id })
 
     if (note) {
       note.archived = !note.archived
+      await this.noteRepository.save(note)
     }
   }
 }
