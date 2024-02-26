@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { Note } from '../../../shared/models/note.model'
 
 @Component({
@@ -8,4 +8,15 @@ import { Note } from '../../../shared/models/note.model'
 })
 export class NoteComponent {
   @Input() public note: Note
+
+  @Output() public noteDeleteRequested: EventEmitter<number> = new EventEmitter<number>()
+  @Output() public noteUpdateRequested: EventEmitter<Note> = new EventEmitter<Note>()
+
+  public deleteNote(): void {
+    this.noteDeleteRequested.emit(this.note.id)
+  }
+
+  public updateNote(): void {
+    this.noteUpdateRequested.emit(this.note)
+  }
 }

@@ -1,4 +1,5 @@
 <app-components-notes-create-note-modal (noteCreated)="createNote($event)"></app-components-notes-create-note-modal>
+<app-components-notes-update-note-modal (noteUpdated)="updateNote($event)"></app-components-notes-update-note-modal>
 
 <div class="container">
   <div class="row my-3">
@@ -15,7 +16,11 @@
   <div class="row">
     @for (note of notes; track note.id) {
     <div class="col-12 col-lg-6 py-2">
-      <app-components-notes-note [note]="note"></app-components-notes-note>
+      <app-components-notes-note
+        [note]="note"
+        (noteDeleteRequested)="null"
+        (noteUpdateRequested)="openUpdateNoteModal($event)"
+      ></app-components-notes-note>
     </div>
     } @empty { No notes have been created yet. }
   </div>

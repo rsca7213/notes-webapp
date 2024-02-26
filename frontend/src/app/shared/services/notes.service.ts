@@ -54,7 +54,7 @@ export class NotesService {
     this.notes.push(note)
   }
 
-  public updateNoteById(data: Note): void {
+  public updateNote(data: Note): void {
     const note = this.getNoteById(data.id)
     if (note) {
       note.title = data.title

@@ -1,0 +1,54 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <span class="iconify me-2" data-icon="mdi-edit"> </span>
+    Update Note
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label for="title" class="form-label">
+          <span class="iconify" data-icon="mdi-rename"> </span>
+          Title
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          formControlName="title"
+          [class]="formErrors.title ? 'is-invalid' : ''"
+        />
+        <div class="invalid-feedback">
+          {{ formErrors.title }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">
+          <span class="iconify" data-icon="mdi-text-box"> </span>
+          Content
+        </label>
+        <textarea
+          class="form-control"
+          id="content"
+          name="content"
+          rows="6"
+          formControlName="content"
+          [class]="formErrors.title ? 'is-invalid' : ''"
+        ></textarea>
+        <div class="invalid-feedback">
+          {{ formErrors.title }}
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer text-end">
+    <button class="btn btn-secondary" (click)="closeModal()">
+      <span class="iconify" data-icon="mdi-close"> </span>
+      Cancel
+    </button>
+    <button class="btn btn-success" (click)="updateNote()">
+      <span class="iconify" data-icon="mdi-check"> </span>
+      Confirm
+    </button>
+  </div>
+</ng-template>
