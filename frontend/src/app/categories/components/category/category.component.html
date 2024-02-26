@@ -1,0 +1,16 @@
+<div class="card shadow">
+  <div class="card-body">
+    <div class="card-title">
+      <span class="iconify" data-icon="mdi-tag"> </span>
+      {{ category.name }}
+    </div>
+    <button class="btn ms-1 btn-sm btn-warning" (click)="updateCategory()">
+      <span class="iconify" data-icon="mdi-pencil"> </span>
+      Edit
+    </button>
+    <button class="btn ms-1 btn-sm btn-danger" (click)="deleteCategory()">
+      <span class="iconify" data-icon="mdi-trash"> </span>
+      Delete
+    </button>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<app-components-categories-create-category-modal></app-components-categories-create-category-modal>
+<app-components-categories-update-category-modal></app-components-categories-update-category-modal>
+<app-components-categories-delete-category-modal></app-components-categories-delete-category-modal>
+<app-components-shared-error-modal></app-components-shared-error-modal>
+
+<div class="container">
+  <div class="row my-3">
+    <div class="col text-center">
+      <h4>Categories</h4>
+    </div>
+  </div>
+  <div class="row my-3">
+    <div class="col text-center">
+      <button class="btn btn-primary" (click)="openCreateCategoryModal()">
+        <span class="iconify" data-icon="mdi-plus-circle"> </span>
+        Create Category
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    @for (category of categories; track category.id) {
+    <div class="col-12 col-lg-6 py-2">
+      <app-components-categories-category
+        [category]="category"
+        (categoryDeleteRequested)="openDeleteCategoryModal($event)"
+        (categoryUpdateRequested)="openUpdateCategoryModal($event)"
+      ></app-components-categories-category>
+    </div>
+    } @empty {
+    <div class="col-12 mt-3 py-2 alert alert-warning">
+      <p class="text-center h3">
+        <span class="iconify" data-icon="mdi-note-off"> </span>
+        No categories found.
+      </p>
+    </div>
+    }
+  </div>
+</div>

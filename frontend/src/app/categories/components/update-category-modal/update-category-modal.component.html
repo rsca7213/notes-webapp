@@ -1,0 +1,37 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <span class="iconify me-2" data-icon="mdi-edit"> </span>
+    Update Category
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label for="name" class="form-label">
+          <span class="iconify" data-icon="mdi-tag"> </span>
+          Name
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          formControlName="name"
+          [class]="formErrors.name ? 'is-invalid' : ''"
+        />
+        <div class="invalid-feedback">
+          {{ formErrors.name }}
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer text-end">
+    <button class="btn btn-secondary" (click)="closeModal()">
+      <span class="iconify" data-icon="mdi-close"> </span>
+      Cancel
+    </button>
+    <button class="btn btn-success" (click)="updateCategory()">
+      <span class="iconify" data-icon="mdi-check"> </span>
+      Confirm
+    </button>
+  </div>
+</ng-template>

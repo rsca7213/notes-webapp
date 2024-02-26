@@ -3,8 +3,16 @@ import { RouterModule, Routes } from '@angular/router'
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'notes',
     loadChildren: () => import('./notes/notes.module').then(m => m.NotesModule)
+  },
+  {
+    path: 'categories',
+    loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/notes'
   }
 ]
 
