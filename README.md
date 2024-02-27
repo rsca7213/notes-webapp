@@ -8,7 +8,6 @@ This README consists of the following parts, listed below:
 - [Tech Stack](#computer-teck-stack)
 - [Required Installs](#warning-required-installs)
 - [App Install](#-app-install)
-- [Building the App](#hammer-building-the-app)
 - [Running the App](#electric_plug-running-the-app)
 
 ### :man_technologist: Developer
@@ -66,3 +65,31 @@ This README consists of the following parts, listed below:
   - To install this language, you must open any command prompt and run the following command:
 
     `npm install -g typescript`
+
+### :wrench: App Install
+
+---
+
+To install the application, you must follow the following steps:
+
+- Clone the repository to your device.
+
+- Then, run the following command inside the folder to get the stack of frameworks and libraries on which the application infrastructure depends:
+
+  `cd backend && npm install`
+
+  `cd frontend && npm install`
+
+### :electric_plug: Running the App
+
+---
+
+To run the application, you simply need to write one of the following two commands in a command prompt located in the application folder:
+
+- Back-End:
+
+  `npm run start:dev`
+
+- Front-End:
+
+  `npm run start`
