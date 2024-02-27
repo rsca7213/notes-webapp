@@ -86,10 +86,6 @@ To install the application, you must follow the following steps:
 
 To run the application, you simply need to write one of the following two commands in a command prompt located in the application folder:
 
-- Back-End:
+- Run the application from Bash Script:
 
-  `npm run start:dev`
-
-- Front-End:
-
-  `npm run start`
+  `./deploy.sh`
